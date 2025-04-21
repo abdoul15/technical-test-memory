@@ -2,7 +2,6 @@
 CONTAINER_WEBSERVER = $(shell docker ps --format '{{.Names}}' | grep -E 'webserver')
 DBT_DIR = /usr/local/airflow/dbt/retail_transform
 
-# Commandes de base
 .PHONY: start stop restart status bash
 
 start:
@@ -45,7 +44,6 @@ test:
 	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
 	docker exec -it $(CONTAINER_WEBSERVER) python -W ignore::DeprecationWarning -m pytest -xvs /usr/local/airflow/ingestion/tests/
 
-# Exécution des tests unitaires uniquement
 test-unit:
 	@echo "Exécution des tests unitaires..."
 	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"

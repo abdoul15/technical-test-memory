@@ -21,7 +21,6 @@ def test_dbt_transform_dag_structure(dagbag):
     """Test the structure of the dbt transformation DAG."""
     dag = dagbag.get_dag("retail_transform")
     
-    # Verify tasks exist
     task_ids = [task.task_id for task in dag.tasks]
     expected_tasks = [
         "dbt_debug", "dbt_deps", "dbt_run_staging", "dbt_test_staging", 
@@ -30,7 +29,6 @@ def test_dbt_transform_dag_structure(dagbag):
     for task_id in expected_tasks:
         assert task_id in task_ids
     
-    # Verify dependencies
     task_dependencies = {
         "dbt_deps": ["dbt_debug"],
         "dbt_run_staging": ["dbt_deps"],
@@ -52,7 +50,7 @@ def test_dbt_transform_dag_default_args(dagbag):
     
     assert dag.default_args["owner"] == "data_engineer"
     assert dag.default_args["retries"] == 3
-    assert dag.schedule_interval is None  # No automatic scheduling
+    assert dag.schedule_interval is None 
     assert dag.catchup is False
     assert "transform" in dag.tags
     assert "dbt" in dag.tags

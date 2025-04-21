@@ -22,13 +22,11 @@ def test_ingestion_dag_structure(dagbag):
     """Test the structure of the ingestion DAG."""
     dag = dagbag.get_dag("retail_ingestion")
     
-    # Verify tasks exist
     task_ids = [task.task_id for task in dag.tasks]
     expected_tasks = ["ingest_clients", "ingest_products", "ingest_stores", "ingest_transactions"]
     for task_id in expected_tasks:
         assert task_id in task_ids
     
-    # Verify dependencies
     upstream_tasks = {
         "ingest_transactions": ["ingest_clients", "ingest_products", "ingest_stores"]
     }
@@ -45,7 +43,7 @@ def test_ingestion_dag_default_args(dagbag):
     
     assert dag.default_args["owner"] == "data_engineer"
     assert dag.default_args["retries"] == 3
-    assert dag.schedule_interval is None  # No automatic scheduling
+    assert dag.schedule_interval is None  
     assert dag.catchup is False
     assert "ingestion" in dag.tags
     assert "retail" in dag.tags

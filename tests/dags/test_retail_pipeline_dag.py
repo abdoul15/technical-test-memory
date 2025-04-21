@@ -21,7 +21,6 @@ def test_retail_pipeline_dag_structure(dagbag):
     """Test the structure of the retail pipeline DAG."""
     dag = dagbag.get_dag("retail_pipeline")
     
-    # Verify tasks exist
     task_ids = [task.task_id for task in dag.tasks]
     expected_tasks = [
         "ingest_clients", "ingest_products", "ingest_stores", "ingest_transactions",
@@ -31,8 +30,7 @@ def test_retail_pipeline_dag_structure(dagbag):
     for task_id in expected_tasks:
         assert task_id in task_ids
     
-    # Verify key dependencies
-    # Ingestion dependencies
+   
     ingestion_dependencies = {
         "ingest_transactions": ["ingest_clients", "ingest_products", "ingest_stores"]
     }
@@ -42,7 +40,6 @@ def test_retail_pipeline_dag_structure(dagbag):
         upstream_task_ids_set = {t.task_id for t in task.upstream_list}
         assert set(upstream_task_ids).issubset(upstream_task_ids_set)
     
-    # Transformation dependencies
     transform_dependencies = {
         "dbt_clean": ["ingest_transactions"],
         "dbt_debug": ["dbt_clean"],
@@ -66,7 +63,7 @@ def test_retail_pipeline_dag_default_args(dagbag):
     
     assert dag.default_args["owner"] == "data_engineer"
     assert dag.default_args["retries"] == 3
-    assert dag.schedule_interval == "0 10 * * *"  # Daily at 10:00
+    assert dag.schedule_interval == "0 10 * * *" 
     assert dag.catchup is False
     assert "pipeline" in dag.tags
     assert "retail" in dag.tags
