@@ -47,11 +47,11 @@ Pour Windows, veuillez consulter la [documentation officielle](https://docs.astr
 
 ```bash
 # Cloner le projet
-git clone <repository-url>
-cd <repository-directory>
+git clone https://github.com/abdoul15/technical-test-memory.git
+cd technical-test-memory
 
 # Configurer les variables d'environnement
-# Modifiez le fichier .env avec vos informations de connexion à Snowflake et Azure Blob Storage
+Créer le fichier .env dans le dossier technical-test-memory avec les informations que je vous ai envoyé par mail.
 ```
 
 ### 2. Démarrage de l'environnement Astro
@@ -82,10 +82,10 @@ make dbt-transform
 #### Option 2: Exécution via l'interface Airflow
 
 ```bash
-# Accéder à l'interface web d'Airflow à http://localhost:8080
-# Utilisateur: admin, Mot de passe: admin
+Accéder à l'interface web d'Airflow à http://localhost:8080
+Utilisateur: admin, Mot de passe: admin
 
-# Déclencher manuellement le DAG retail_pipeline
+Déclencher manuellement le DAG retail_pipeline
 ```
 
 ## Structure du projet
