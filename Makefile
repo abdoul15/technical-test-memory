@@ -66,7 +66,7 @@ test-dags: install-test-deps
 	docker exec -it $(CONTAINER_WEBSERVER) python -W ignore::DeprecationWarning -m pytest -xvs /usr/local/airflow/tests/dags/
 
 # Commandes pour dbt
-.PHONY: dbt-clean dbt-deps dbt-run-staging dbt-test-staging dbt-run-core dbt-test-core dbt-transform
+.PHONY: dbt-clean dbt-deps dbt-run-staging dbt-test-staging dbt-run-core dbt-test-core dbt-transform dbt-display-tables
 
 dbt-clean:
 	@echo "Nettoyage des fichiers dbt..."
@@ -98,7 +98,12 @@ dbt-test-core:
 	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
 	docker exec -it $(CONTAINER_WEBSERVER) bash -c "cd $(DBT_DIR) && dbt test --select core"
 
-dbt-transform: dbt-clean dbt-deps dbt-run-staging dbt-test-staging dbt-run-core dbt-test-core
+dbt-display-tables:
+	@echo "Affichage des 10 premières lignes de chaque table finale..."
+	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
+	docker exec -it $(CONTAINER_WEBSERVER) bash -c "cd $(DBT_DIR) && dbt run-operation display_final_tables"
+
+dbt-transform: dbt-clean dbt-deps dbt-run-staging dbt-test-staging dbt-run-core dbt-test-core dbt-display-tables
 	@echo "Toutes les commandes dbt ont été exécutées"
 
 .PHONY: pipeline
@@ -130,6 +135,7 @@ help:
 	@echo "  make dbt-test-staging   - Tester les modèles staging"
 	@echo "  make dbt-run-core       - Exécuter les modèles core"
 	@echo "  make dbt-test-core      - Tester les modèles core"
+	@echo "  make dbt-display-tables - Afficher les 10 premières lignes de chaque table finale"
 	@echo "  make dbt-transform      - Exécuter toutes les transformations dbt"
 	@echo "  make pipeline           - Exécuter le pipeline complet (ingestion + dbt)"
 	@echo "  make help               - Afficher cette aide"

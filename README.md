@@ -177,7 +177,12 @@ make dbt-test-core
 
 # Exécuter toutes les transformations dbt
 make dbt-transform
+
+# Afficher les 10 premières lignes de chaque table finale
+make dbt-display-tables
 ```
+
+À la fin de l'exécution du pipeline complet (`make pipeline`) ou des transformations dbt (`make dbt-transform`), un aperçu des 10 premières lignes de chaque table dimensionnelle (4 tables finales) est automatiquement affiché dans la console.
 
 ## Détails techniques
 
