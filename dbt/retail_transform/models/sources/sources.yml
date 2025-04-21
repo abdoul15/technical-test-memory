@@ -1,0 +1,66 @@
+version: 2
+
+sources:
+  - name: raw
+    database: "{{ env_var('SNOWFLAKE_DATABASE', 'dbt_tpch') }}"
+    schema: "{{ env_var('SNOWFLAKE_SCHEMA', 'analytics') }}"
+    tables:
+      - name: clients
+        description: "Données brutes des clients"
+        columns:
+          - name: id
+            description: "Identifiant unique du client"
+          - name: name
+            description: "Nom du client"
+          - name: job
+            description: "Métier du client"
+          - name: email
+            description: "Adresse email du client"
+          - name: account_id
+            description: "Numéro de carte de fidélité"
+
+      - name: stores
+        description: "Données brutes des magasins"
+        columns:
+          - name: id
+            description: "Identifiant unique du magasin"
+          - name: latlng
+            description: "Coordonnées GPS du magasin"
+          - name: opening
+            description: "Heure d'ouverture"
+          - name: closing
+            description: "Heure de fermeture"
+          - name: type
+            description: "Type de magasin"
+
+      - name: products
+        description: "Données brutes des produits"
+        columns:
+          - name: id
+            description: "Identifiant unique du produit"
+          - name: ean
+            description: "Code EAN du produit"
+          - name: brand
+            description: "Marque du produit"
+          - name: description
+            description: "Description du produit"
+
+      - name: transactions
+        description: "Données brutes des transactions"
+        columns:
+          - name: transaction_id
+            description: "Identifiant unique de la transaction"
+          - name: client_id
+            description: "Identifiant du client"
+          - name: date
+            description: "Date de la transaction"
+          - name: hour
+            description: "Heure de la transaction"
+          - name: minute
+            description: "Minute de la transaction"
+          - name: product_id
+            description: "Identifiant du produit"
+          - name: quantity
+            description: "Quantité achetée"
+          - name: store_id
+            description: "Identifiant du magasin"

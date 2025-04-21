@@ -1,0 +1,98 @@
+version: 2
+
+models:
+  - name: dim_clients
+    description: "Dimension des clients"
+    columns:
+      - name: client_id
+        description: "Identifiant unique du client"
+        tests:
+          - unique
+          - not_null
+      - name: name
+        description: "Nom du client"
+      - name: job
+        description: "Métier du client"
+      - name: email
+        description: "Adresse email du client"
+      - name: account_id
+        description: "Numéro de carte de fidélité"
+
+  - name: dim_stores
+    description: "Dimension des magasins avec coordonnées GPS séparées"
+    columns:
+      - name: store_id
+        description: "Identifiant unique du magasin"
+        tests:
+          - unique
+          - not_null
+      - name: latlng
+        description: "Coordonnées GPS brutes"
+      - name: latitude
+        description: "Latitude du magasin"
+      - name: longitude
+        description: "Longitude du magasin"
+      - name: opening_hour
+        description: "Heure d'ouverture"
+      - name: closing_hour
+        description: "Heure de fermeture"
+      - name: store_type
+        description: "Type de magasin"
+
+  - name: dim_products
+    description: "Dimension des produits"
+    columns:
+      - name: product_id
+        description: "Identifiant unique du produit"
+        tests:
+          - unique
+          - not_null
+      - name: ean
+        description: "Code EAN du produit"
+      - name: brand
+        description: "Marque du produit"
+      - name: description
+        description: "Description du produit"
+
+  - name: fct_transactions
+    description: "Table de faits des transactions avec account_id et timestamp"
+    columns:
+      - name: transaction_id
+        description: "Identifiant unique de la transaction"
+        tests:
+          - unique
+          - not_null
+      - name: client_id
+        description: "Identifiant du client"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_clients')
+              field: client_id
+      - name: product_id
+        description: "Identifiant du produit"
+        tests:
+          - not_null
+          - relationships:
+              to: ref('dim_products')
+              field: product_id
+      - name: store_id
+        description: "Identifiant du magasin"
+        tests:
+          - not_null
+      - name: quantity
+        description: "Quantité achetée"
+      - name: transaction_timestamp
+        description: "Horodatage complet de la transaction"
+        tests:
+          - not_null
+      - name: transaction_date
+        description: "Date de la transaction"
+      - name: transaction_hour
+        description: "Heure de la transaction"
+      - name: transaction_minute
+        description: "Minute de la transaction"
+      - name: account_id
+        description: "Numéro de carte de fidélité du client"
+      - name: is_orphan_store
+        description: "Indique si le magasin n'existe pas dans la dimension stores"

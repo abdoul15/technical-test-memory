@@ -1,0 +1,9 @@
+# Astro Runtime includes pre-installed providers: https://www.astronomer.io/docs/astro/runtime-image-architecture#provider-packages
+python-dotenv==1.0.0
+azure-storage-blob==12.19.0
+snowflake-connector-python==3.13.1
+snowflake-snowpark-python>=1.27.0
+dbt-core==1.9.2
+dbt-snowflake==1.9.2
+opentelemetry-proto>=1.28.0
+pendulum>=2.0.0
