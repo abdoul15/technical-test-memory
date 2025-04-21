@@ -27,7 +27,7 @@ bash:
 	docker exec -it $(CONTAINER_WEBSERVER) bash
 
 # Commandes pour l'ingestion
-.PHONY: ingestion test test-unit test-integration test-coverage install-test-deps
+.PHONY: ingestion test test-unit test-integration test-coverage test-dags install-test-deps
 
 install-test-deps:
 	@echo "Installation des dépendances de test..."
@@ -60,6 +60,12 @@ test-coverage: install-test-deps
 	@echo "Exécution des tests avec couverture de code..."
 	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
 	docker exec -it $(CONTAINER_WEBSERVER) python -W ignore::DeprecationWarning -m pytest --cov=ingestion /usr/local/airflow/ingestion/tests/ --cov-report=term-missing
+
+# Exécution des tests des DAGs
+test-dags: install-test-deps
+	@echo "Exécution des tests des DAGs..."
+	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
+	docker exec -it $(CONTAINER_WEBSERVER) python -W ignore::DeprecationWarning -m pytest -xvs /usr/local/airflow/tests/dags/
 
 # Commandes pour dbt
 .PHONY: dbt-clean dbt-deps dbt-run-staging dbt-test-staging dbt-run-core dbt-test-core dbt-transform
@@ -119,6 +125,7 @@ help:
 	@echo "  make test-unit          - Exécuter les tests unitaires"
 	@echo "  make test-integration   - Exécuter les tests d'intégration"
 	@echo "  make test-coverage      - Exécuter les tests avec couverture de code"
+	@echo "  make test-dags          - Exécuter les tests des DAGs"
 	@echo "  make dbt-clean          - Nettoyer les fichiers dbt"
 	@echo "  make dbt-deps           - Installer les dépendances dbt"
 	@echo "  make dbt-run-staging    - Exécuter les modèles staging"

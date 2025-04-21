@@ -106,6 +106,9 @@ make test-integration
 
 # Exécuter les tests avec couverture de code
 make test-coverage
+
+# Exécuter les tests des DAGs
+make test-dags
 ```
 
 ## Commandes utilitaires
