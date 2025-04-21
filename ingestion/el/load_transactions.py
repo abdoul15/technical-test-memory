@@ -5,7 +5,7 @@ def ingest_transactions():
     """
     Création de la table RAW.TRANSACTIONS et chargement des fichiers transactions_*.csv dans Snowflake.
     """
-    # Définition des colonnes pour la table TRANSACTIONS
+    # DDL
     ddl = (
         'transaction_id BIGINT,'
         'client_id BIGINT,'
@@ -17,7 +17,6 @@ def ingest_transactions():
         'store_id BIGINT'
     )
     
-    # Utilisation de la fonction générique pour l'ingestion
     return ingest_raw_data(
         table_name='transactions',
         columns_definition=ddl,

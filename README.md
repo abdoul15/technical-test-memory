@@ -1,6 +1,6 @@
 # Pipeline de Données Retail - Solution ELT avec Astro
 
-Ce projet est une solution ELT complète pour traiter les données retail d'un client, répondant aux exigences d'un test technique de Data Engineer. Le pipeline est implémenté avec Astro (Airflow) et automatisé avec Makefile.
+Ce projet est une solution ELT complète pour traiter les données retail d'un client, répondant aux exigences d'un test technique de Data Engineer. Le pipeline est implémenté avec Astro (Airflow), automatisé avec Makefile, et déployé sur Astronomer Cloud.
 
 ## Objectif du projet
 
@@ -17,11 +17,29 @@ Le pipeline est composé de trois parties principales :
 2. **Transformation (T)** : Modèles dbt pour transformer les données en modèles dimensionnels
 3. **Orchestration** : DAGs Airflow pour orchestrer l'ensemble du pipeline
 
+### Architecture
+
+![Architecture du pipeline de données retail](architecture.png)
+
 ## Prérequis
 
 - [Astro CLI](https://docs.astronomer.io/astro/cli/install-cli)
 - Docker et Docker Compose
 - Make
+
+### Installation d'Astro CLI
+
+Pour Linux :
+```bash
+curl -sSL install.astronomer.io | sudo bash -s
+```
+
+Pour macOS :
+```bash
+brew install astro
+```
+
+Pour Windows, veuillez consulter la [documentation officielle](https://docs.astronomer.io/astro/cli/install-cli).
 
 ## Guide d'utilisation
 
@@ -29,17 +47,20 @@ Le pipeline est composé de trois parties principales :
 
 ```bash
 # Cloner le projet
-git clone <repository-url>
-cd <repository-directory>
+git clone https://github.com/abdoul15/technical-test-memory.git
+cd technical-test-memory
 
 # Configurer les variables d'environnement
-# Modifiez le fichier .env avec vos informations de connexion à Snowflake et Azure Blob Storage
+Créer le fichier .env dans le dossier technical-test-memory avec les informations que je vous ai envoyé par mail.
 ```
 
 ### 2. Démarrage de l'environnement Astro
 
 ```bash
-# Démarrer l'environnement Astro
+# Démarrer l'environnement Astro avec Astro CLI
+astro dev start
+
+# Ou utiliser le Makefile (qui utilise Astro CLI en arrière-plan)
 make start
 ```
 
@@ -61,10 +82,10 @@ make dbt-transform
 #### Option 2: Exécution via l'interface Airflow
 
 ```bash
-# Accéder à l'interface web d'Airflow à http://localhost:8080
-# Utilisateur: admin, Mot de passe: admin
+Accéder à l'interface web d'Airflow à http://localhost:8080
+Utilisateur: admin, Mot de passe: admin
 
-# Déclencher manuellement le DAG retail_pipeline
+Déclencher manuellement le DAG retail_pipeline
 ```
 
 ## Structure du projet
@@ -106,6 +127,9 @@ make test-integration
 
 # Exécuter les tests avec couverture de code
 make test-coverage
+
+# Exécuter les tests des DAGs
+make test-dags
 ```
 
 ## Commandes utilitaires
@@ -153,7 +177,12 @@ make dbt-test-core
 
 # Exécuter toutes les transformations dbt
 make dbt-transform
+
+# Afficher les 10 premières lignes de chaque table finale
+make dbt-display-tables
 ```
+
+À la fin de l'exécution du pipeline complet (`make pipeline`) ou des transformations dbt (`make dbt-transform`), un aperçu des 10 premières lignes de chaque table dimensionnelle (4 tables finales) est automatiquement affiché dans la console.
 
 ## Détails techniques
 
@@ -181,3 +210,16 @@ Le DAG principal (`retail_pipeline`) est configuré pour s'exécuter quotidienne
 - Ingestion des transactions
 - Exécution des transformations dbt
 - Tests de validation des données
+
+### Déploiement sur Astronomer Cloud
+
+Ce projet est déployé sur Astronomer Cloud, la plateforme managée d'Astronomer pour Apache Airflow. Le déploiement sur Astronomer Cloud offre plusieurs avantages :
+
+- Infrastructure gérée et hautement disponible
+- Mise à l'échelle automatique des ressources
+- Surveillance et alertes intégrées
+- Gestion simplifiée des secrets et des variables d'environnement
+- Interface utilisateur conviviale pour la gestion des déploiements
+
+Je pourrais faire une demo si vous le souhaiter. 
+Toutefois, je vous ai envoyé un lien permettant d'accéder aux Dags, mais vous devez avoir un compte astronomer pour y accéder rien de plus simple que d'en créer un sur https://cloud.astronomer.io

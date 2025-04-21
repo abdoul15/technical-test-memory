@@ -2,7 +2,6 @@
 CONTAINER_WEBSERVER = $(shell docker ps --format '{{.Names}}' | grep -E 'webserver')
 DBT_DIR = /usr/local/airflow/dbt/retail_transform
 
-# Commandes de base
 .PHONY: start stop restart status bash
 
 start:
@@ -27,7 +26,7 @@ bash:
 	docker exec -it $(CONTAINER_WEBSERVER) bash
 
 # Commandes pour l'ingestion
-.PHONY: ingestion test test-unit test-integration test-coverage install-test-deps
+.PHONY: ingestion test test-unit test-integration test-coverage test-dags install-test-deps
 
 install-test-deps:
 	@echo "Installation des dépendances de test..."
@@ -45,7 +44,6 @@ test:
 	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
 	docker exec -it $(CONTAINER_WEBSERVER) python -W ignore::DeprecationWarning -m pytest -xvs /usr/local/airflow/ingestion/tests/
 
-# Exécution des tests unitaires uniquement
 test-unit:
 	@echo "Exécution des tests unitaires..."
 	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
@@ -61,8 +59,14 @@ test-coverage: install-test-deps
 	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
 	docker exec -it $(CONTAINER_WEBSERVER) python -W ignore::DeprecationWarning -m pytest --cov=ingestion /usr/local/airflow/ingestion/tests/ --cov-report=term-missing
 
+# Exécution des tests des DAGs
+test-dags: install-test-deps
+	@echo "Exécution des tests des DAGs..."
+	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
+	docker exec -it $(CONTAINER_WEBSERVER) python -W ignore::DeprecationWarning -m pytest -xvs /usr/local/airflow/tests/dags/
+
 # Commandes pour dbt
-.PHONY: dbt-clean dbt-deps dbt-run-staging dbt-test-staging dbt-run-core dbt-test-core dbt-transform
+.PHONY: dbt-clean dbt-deps dbt-run-staging dbt-test-staging dbt-run-core dbt-test-core dbt-transform dbt-display-tables
 
 dbt-clean:
 	@echo "Nettoyage des fichiers dbt..."
@@ -94,7 +98,12 @@ dbt-test-core:
 	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
 	docker exec -it $(CONTAINER_WEBSERVER) bash -c "cd $(DBT_DIR) && dbt test --select core"
 
-dbt-transform: dbt-clean dbt-deps dbt-run-staging dbt-test-staging dbt-run-core dbt-test-core
+dbt-display-tables:
+	@echo "Affichage des 10 premières lignes de chaque table finale..."
+	@echo "Conteneur détecté: $(CONTAINER_WEBSERVER)"
+	docker exec -it $(CONTAINER_WEBSERVER) bash -c "cd $(DBT_DIR) && dbt run-operation display_final_tables"
+
+dbt-transform: dbt-clean dbt-deps dbt-run-staging dbt-test-staging dbt-run-core dbt-test-core dbt-display-tables
 	@echo "Toutes les commandes dbt ont été exécutées"
 
 .PHONY: pipeline
@@ -119,12 +128,14 @@ help:
 	@echo "  make test-unit          - Exécuter les tests unitaires"
 	@echo "  make test-integration   - Exécuter les tests d'intégration"
 	@echo "  make test-coverage      - Exécuter les tests avec couverture de code"
+	@echo "  make test-dags          - Exécuter les tests des DAGs"
 	@echo "  make dbt-clean          - Nettoyer les fichiers dbt"
 	@echo "  make dbt-deps           - Installer les dépendances dbt"
 	@echo "  make dbt-run-staging    - Exécuter les modèles staging"
 	@echo "  make dbt-test-staging   - Tester les modèles staging"
 	@echo "  make dbt-run-core       - Exécuter les modèles core"
 	@echo "  make dbt-test-core      - Tester les modèles core"
+	@echo "  make dbt-display-tables - Afficher les 10 premières lignes de chaque table finale"
 	@echo "  make dbt-transform      - Exécuter toutes les transformations dbt"
 	@echo "  make pipeline           - Exécuter le pipeline complet (ingestion + dbt)"
 	@echo "  make help               - Afficher cette aide"
