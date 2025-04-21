@@ -27,6 +27,20 @@ Le pipeline est composé de trois parties principales :
 - Docker et Docker Compose
 - Make
 
+### Installation d'Astro CLI
+
+Pour Linux :
+```bash
+curl -sSL install.astronomer.io | sudo bash -s
+```
+
+Pour macOS :
+```bash
+brew install astro
+```
+
+Pour Windows, veuillez consulter la [documentation officielle](https://docs.astronomer.io/astro/cli/install-cli).
+
 ## Guide d'utilisation
 
 ### 1. Initialisation du projet
@@ -43,7 +57,10 @@ cd <repository-directory>
 ### 2. Démarrage de l'environnement Astro
 
 ```bash
-# Démarrer l'environnement Astro
+# Démarrer l'environnement Astro avec Astro CLI
+astro dev start
+
+# Ou utiliser le Makefile (qui utilise Astro CLI en arrière-plan)
 make start
 ```
 
@@ -200,6 +217,4 @@ Ce projet est déployé sur Astronomer Cloud, la plateforme managée d'Astronome
 - Interface utilisateur conviviale pour la gestion des déploiements
 
 Je pourrais faire une demo si vous le souhaiter. 
-Tooutefois, je vous ai envoyé un lien permettant d'accéder aux Dags, mais vous devez avoir un compte astronomer pour y accéder rien de plus simple que d'en créer un sur https://install.astronomer.io 
-
-
+Toutefois, je vous ai envoyé un lien permettant d'accéder aux Dags, mais vous devez avoir un compte astronomer pour y accéder rien de plus simple que d'en créer un sur https://cloud.astronomer.io
