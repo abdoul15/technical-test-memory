@@ -15,7 +15,8 @@ Traiter les données retail fournies par un client et produire quatre tables dim
 Le pipeline est composé de trois parties principales :
 1. **Ingestion (E+L)** : Extraction des données depuis Azure Blob Storage et chargement dans Snowflake (Python)
 2. **Transformation (T)** : Modèles dbt pour transformer les données en modèles dimensionnels
-3. **Orchestration** : DAGs Airflow pour orchestrer l'ensemble du pipeline
+3. **Orchestration** : DAGs Airflow (Astronomer) pour orchestrer l'ensemble du pipeline
+4. **Astronomer Cloud**: Les DAGs sont déployés sur Astronomer Cloud
 
 ### Architecture
 
