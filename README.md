@@ -1,6 +1,6 @@
 # Pipeline de Données Retail - Solution ELT avec Astro
 
-Ce projet est une solution ELT complète pour traiter les données retail d'un client, répondant aux exigences d'un test technique de Data Engineer. Le pipeline est implémenté avec Astro (Airflow) et automatisé avec Makefile.
+Ce projet est une solution ELT complète pour traiter les données retail d'un client, répondant aux exigences d'un test technique de Data Engineer. Le pipeline est implémenté avec Astro (Airflow), automatisé avec Makefile, et déployé sur Astronomer Cloud.
 
 ## Objectif du projet
 
@@ -16,6 +16,10 @@ Le pipeline est composé de trois parties principales :
 1. **Ingestion (E+L)** : Extraction des données depuis Azure Blob Storage et chargement dans Snowflake (Python)
 2. **Transformation (T)** : Modèles dbt pour transformer les données en modèles dimensionnels
 3. **Orchestration** : DAGs Airflow pour orchestrer l'ensemble du pipeline
+
+### Architecture
+
+![Architecture du pipeline de données retail](architecture.png)
 
 ## Prérequis
 
@@ -184,3 +188,18 @@ Le DAG principal (`retail_pipeline`) est configuré pour s'exécuter quotidienne
 - Ingestion des transactions
 - Exécution des transformations dbt
 - Tests de validation des données
+
+### Déploiement sur Astronomer Cloud
+
+Ce projet est déployé sur Astronomer Cloud, la plateforme managée d'Astronomer pour Apache Airflow. Le déploiement sur Astronomer Cloud offre plusieurs avantages :
+
+- Infrastructure gérée et hautement disponible
+- Mise à l'échelle automatique des ressources
+- Surveillance et alertes intégrées
+- Gestion simplifiée des secrets et des variables d'environnement
+- Interface utilisateur conviviale pour la gestion des déploiements
+
+Je pourrais faire une demo si vous le souhaiter. 
+Tooutefois, je vous ai envoyé un lien permettant d'accéder aux Dags, mais vous devez avoir un compte astronomer pour y accéder rien de plus simple que d'en créer un sur https://install.astronomer.io 
+
+

@@ -32,9 +32,9 @@ models:
         description: "Latitude du magasin"
       - name: longitude
         description: "Longitude du magasin"
-      - name: opening_hour
+      - name: opening
         description: "Heure d'ouverture"
-      - name: closing_hour
+      - name: closing
         description: "Heure de fermeture"
       - name: store_type
         description: "Type de magasin"
@@ -96,3 +96,5 @@ models:
         description: "Numéro de carte de fidélité du client"
       - name: is_orphan_store
         description: "Indique si le magasin n'existe pas dans la dimension stores"
+      - name: is_during_opening_hours
+        description: "Indique si la transaction a eu lieu pendant les heures d'ouverture du magasin"

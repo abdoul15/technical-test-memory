@@ -38,7 +38,8 @@ def ingest_raw_data(table_name, columns_definition, file_pattern):
         ensure_raw_table(session, table_name=table_name, columns_definition=columns_definition)
 
         # 3. Chargement des données brutes
-        load_raw_data(session, table_name=table_name, pattern=file_pattern, stage_name='raw_stage_sas', file_format='csv_format')
+        load_raw_data(session, table_name=table_name, pattern=file_pattern, 
+                     stage_name='raw_stage_sas', file_format='csv_format')
         
         return True
     except Exception as e:
